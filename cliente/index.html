@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input {
+        width: 400px;
+        height: 40px;
+      }
+      ul li:nth-child(odd) {
+        background-color: aquamarine;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>APP de chat</h1>
+    <ul></ul>
+    <form action="">
+      <input type="text" placeholder="aqui tu texto" />
+      <button>Enviar</button>
+    </form>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let socket = io();
+    const form = document.querySelector("form");
+    const input = document.querySelector("input");
+    const mensajes = document.querySelector("ul");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (input.value) {
+        socket.emit("chat", input.value);
+        input.value = "";
+      }
+    });
+
+    socket.on("chat", (msg) => {
+      let item = document.createElement("li");
+      item.textContent = msg;
+      mensajes.appendChild(item);
+    });
+  </script>
+</html>
